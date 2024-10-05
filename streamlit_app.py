@@ -4,22 +4,25 @@ import os
 import logging
 import nltk
 
-@st.cache_resource
-def download_nltk_data():
-    nltk.download('punkt')
-    nltk.download('stopwords')
-
-download_nltk_data()
-
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-nltk.download('punkt', quiet=True)  # Download the 'punkt' tokenizer
-nltk.download('stopwords', quiet=True)  # Download stopwords
-nltk.download('wordnet', quiet=True)  # Download WordNet
-
-# Set page config (move this to the top)
+# Set page config (must be the first Streamlit command)
 st.set_page_config(page_title="Sentiment Analysis", layout="centered")
+
+# Ensure the required NLTK resources are downloaded
+@st.cache_resource
+def download_nltk_data():
+    try:
+        nltk.download('punkt', quiet=True)  # Download the 'punkt' tokenizer
+        nltk.download('stopwords', quiet=True)  # Download stopwords
+        nltk.download('wordnet', quiet=True)  # Download WordNet
+        logging.info("NLTK data downloaded successfully")
+    except Exception as e:
+        logging.error(f"Error downloading NLTK data: {e}")
+        st.error(f"Error downloading NLTK data: {e}")
+
+download_nltk_data()
 
 # Get the directory of the current script
 current_dir = os.path.dirname(os.path.abspath(__file__))
