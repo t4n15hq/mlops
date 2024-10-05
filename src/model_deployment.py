@@ -69,7 +69,18 @@ def load_model_and_vectorizer():
     
     return model, vectorizer
 
+def ensure_nltk_data():
+    try:
+        nltk.data.find('tokenizers/punkt')
+    except LookupError:
+        nltk.download('punkt')
+    try:
+        nltk.data.find('corpora/stopwords')
+    except LookupError:
+        nltk.download('stopwords')
+
 def preprocess_text(text):
+    ensure_nltk_data()
     tokens = word_tokenize(text.lower())
     return ' '.join([token for token in tokens if token.isalnum() and token not in stop_words])
 
