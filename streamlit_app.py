@@ -2,9 +2,16 @@ import streamlit as st
 from src.model_deployment import load_model_and_vectorizer, predict_sentiment
 import os
 import logging
+import nltk
+
+
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
+nltk.download('punkt', quiet=True)  # Download the 'punkt' tokenizer
+nltk.download('stopwords', quiet=True)  # Download stopwords
+nltk.download('wordnet', quiet=True)  # Download WordNet
 
 # Set page config (move this to the top)
 st.set_page_config(page_title="Sentiment Analysis", layout="centered")
